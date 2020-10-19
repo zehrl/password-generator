@@ -45,28 +45,113 @@ function generatePassword() {
 
   // *** User is prompted to select one/many of: lowercase, uppercase, numeric and special characters
   // Error check if at least 1 is selected
-  hasLowercase = confirm("Would you like your password to contain: lowercase? (ex. a, b, c etc.)");
-  console.log(`User wants lowercase? ${hasLowercase}`);
+  var requiresLowercase = false;
+  var requiresUppercase = false;
+  var requiresNumbers = false;
+  var requiresSpecialCharacters = false;
 
-  hasUppercase = confirm("Would you like your password to contain: uppercase? (ex. A, B, C etc.)");
-  console.log(`User wants uppercase? ${hasUppercase}`);
+  while ((requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters) == 0) {
 
-  hasNumbers = confirm("Would you like your password to contain: numbers? (ex. 1, 2, 3 etc.)");
-  console.log(`User wants numbers? ${hasNumbers}`);
+    requiresLowercase = confirm("Would you like your password to contain: lowercase? (ex. a, b, c etc.)");
+    console.log(`User wants lowercase? ${requiresLowercase}`);
 
-  hasSpecialCharacters = confirm("Would you like your password to contain: special characters? (ex. #, @, % etc.)");
-  console.log(`User wants uppercase? ${hasSpecialCharacters}`);
+    requiresUppercase = confirm("Would you like your password to contain: uppercase? (ex. A, B, C etc.)");
+    console.log(`User wants uppercase? ${requiresUppercase}`);
 
-  // *** Generate password based on previous criteria
-  // *** Loop number of characters from "passwordLength" to array
-  // *** Create array of possible characters based on "hasXXXX" variables
-  // ***
-  // ***
-  // ***
-  // ***
+    requiresNumbers = confirm("Would you like your password to contain: numbers? (ex. 1, 2, 3 etc.)");
+    console.log(`User wants numbers? ${requiresNumbers}`);
 
-  return "testpassword123@#";
+    requiresSpecialCharacters = confirm("Would you like your password to contain: special characters? (ex. #, @, % etc.)");
+    console.log(`User wants uppercase? ${requiresSpecialCharacters}`);
+
+    if ((requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters) == 0) {
+      alert("Oops! You must select at least one character criteria.")
+    }
+
+  }
+
+  // *** Generate required arrays based on user criteria
+  if (requiresLowercase) {
+    lowercaseArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  }
+  if (requiresUppercase) {
+    uppercaseArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  }
+  if (requiresNumbers) {
+    numberArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  }
+  if (requiresSpecialCharacters) {
+    specialCharacterArray = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`' , '{' , '|' , '}' , '~'];
+  }
+
+  // *** String generation
+  var hasLowercase = false;
+  var hasUppercase = false;
+  var hasNumbers = false;
+  var hasSpecialCharacters = false;
+  var passwordString = "";
+
+
+  while (passwordString.length < passwordLength) {
+    charChoice = Math.ceil(Math.random() * 4);
+    console.log(charChoice);
+
+    if ((charChoice == 1) && requiresLowercase) {
+      var randLowercase = Math.floor(lowercaseArray.length * Math.random());
+      passwordString += lowercaseArray[randLowercase];
+      hasLowercase = true;
+
+    } else if ((charChoice == 2) && requiresUppercase) {
+      var randUppercase = Math.floor(uppercaseArray.length * Math.random());
+      passwordString += uppercaseArray[randUppercase];
+      hasUppercase = true;
+
+    } else if ((charChoice == 3) && requiresNumbers) {
+      var randNumber = Math.floor(numberArray.length * Math.random());
+      passwordString += numberArray[randNumber];
+      hasNumbers = true;
+
+    } else if ((charChoice == 4) && requiresSpecialCharacters) {
+      var randSpecialCharacter = Math.floor(specialCharacterArray.length * Math.random());
+      passwordString += specialCharacterArray[randSpecialCharacter];
+      hasSpecialCharacters = true;
+
+    }
+    console.log(passwordString);
+
+    // *** check to see if all required characer types are being used
+    charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
+    if (charTypeCount >= (passwordLength - passwordString.length)) {
+      // console.log(`I have  of ${ (requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters) } different types and I have ${ (passwordLength - passwordString.length) } space left!`)
+      
+      if ((hasLowercase) && (charTypeCount > 1)) {
+        requiresLowercase = false;
+        charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
+
+      }
+      if ((hasUppercase) && (charTypeCount > 1)) {
+        requiresUppercase = false;
+        charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
+    
+      }
+      if ((hasNumbers) && (charTypeCount > 1)) {
+        requiresNumbers = false;
+        charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
+    
+      }
+      if ((hasSpecialCharacters) && (charTypeCount > 1)) {
+        requiresSpecialCharacters = false;
+        charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
+    
+      }
+    }
+
+  }
+  return passwordString;
 }
+
+
+
 
 // Write password to the #password input
 function writePassword() {
