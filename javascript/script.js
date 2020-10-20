@@ -1,13 +1,5 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-console.log(generateBtn)
-
-// *** User clicks "Generate Password" button
-
-
-
-
-// *** Print password on page (written or alert :) )
 
 // Generate the password
 function generatePassword() {
@@ -41,7 +33,11 @@ function generatePassword() {
     }
 
   }
-  console.log(`Password Length = ${passwordLength}`)
+
+  // If user clicks "cancel", stop function
+  if (passwordLength === null) {
+    return "Your Secure Password";
+  }
 
   // *** User is prompted to select one/many of: lowercase, uppercase, numeric and special characters
   // Error check if at least 1 is selected
@@ -53,17 +49,13 @@ function generatePassword() {
   while ((requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters) == 0) {
 
     requiresLowercase = confirm("Would you like your password to contain: lowercase? (ex. a, b, c etc.)");
-    console.log(`User wants lowercase? ${requiresLowercase}`);
 
     requiresUppercase = confirm("Would you like your password to contain: uppercase? (ex. A, B, C etc.)");
-    console.log(`User wants uppercase? ${requiresUppercase}`);
 
     requiresNumbers = confirm("Would you like your password to contain: numbers? (ex. 1, 2, 3 etc.)");
-    console.log(`User wants numbers? ${requiresNumbers}`);
-
+ 
     requiresSpecialCharacters = confirm("Would you like your password to contain: special characters? (ex. #, @, % etc.)");
-    console.log(`User wants uppercase? ${requiresSpecialCharacters}`);
-
+  
     if ((requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters) == 0) {
       alert("Oops! You must select at least one character criteria.")
     }
@@ -94,7 +86,6 @@ function generatePassword() {
 
   while (passwordString.length < passwordLength) {
     charChoice = Math.ceil(Math.random() * 4);
-    console.log(charChoice);
 
     if ((charChoice == 1) && requiresLowercase) {
       var randLowercase = Math.floor(lowercaseArray.length * Math.random());
@@ -117,13 +108,11 @@ function generatePassword() {
       hasSpecialCharacters = true;
 
     }
-    console.log(passwordString);
 
-    // *** check to see if all required characer types are being used
+    // *** Check to see if all required characer types are being used
     charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
     if (charTypeCount >= (passwordLength - passwordString.length)) {
-      // console.log(`I have  of ${ (requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters) } different types and I have ${ (passwordLength - passwordString.length) } space left!`)
-      
+
       if ((hasLowercase) && (charTypeCount > 1)) {
         requiresLowercase = false;
         charTypeCount = requiresLowercase + requiresUppercase + requiresNumbers + requiresSpecialCharacters;
@@ -149,9 +138,6 @@ function generatePassword() {
   }
   return passwordString;
 }
-
-
-
 
 // Write password to the #password input
 function writePassword() {
